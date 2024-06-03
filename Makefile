@@ -24,7 +24,7 @@ GO_OUT_FILES = $(foreach proto,$(PROTO),$(proto).pb.go)
 BUF_GEN_CONFIG = $(PROTO_DIR)/buf.gen.yaml
 OPENAPI_OUT ?= $(CUR_DIR)
 
-.PHONE: run
+.PHONY: run
 
 # Run the echo service.
 run:
@@ -33,6 +33,9 @@ run:
 
 cmd_%:
 	cd cmd/$* && go build -a
+
+# Build everything.
+build: progs
 
 # Build CLI programs.
 progs: go $(PROG_DEPS)

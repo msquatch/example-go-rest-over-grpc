@@ -24,6 +24,11 @@ import (
 
 type rest_handler_func func(ctx context.Context, mux *gwruntime.ServeMux, endpoint string, opts []grpc.DialOption) (err error)
 
+// Runs boilerplate code for splitting out the REST requests from gRPC requests
+// on the same port. Calls `reg_rest_handler`, which is specific to the
+// service being run.
+// HTTP 2 connections are assumed to be gRPC requests, while HTTP 1.x
+// connections are assumed to be REST requests.
 func configure_rest_and_serve(
 	conf *Config,
 	listener net.Listener,
@@ -50,7 +55,7 @@ func configure_rest_and_serve(
 		return fmt.Errorf("couldn't register REST handler: %w", err)
 	}
 
-	gw_server := &http.Server{
+	rest_gw_server := &http.Server{
 		Addr:    conf.Listen,
 		Handler: gwmux,
 	}
@@ -61,13 +66,15 @@ func configure_rest_and_serve(
 	// Match HTTP 1.x requests.
 	http1_listener := m.Match(cmux.HTTP1Fast())
 
-	go gw_server.Serve(http1_listener)
+	go rest_gw_server.Serve(http1_listener)
 	go grpc_server.Serve(http2_listener)
 
 	slog.Info("Starting server", "listen", conf.Listen)
 	return m.Serve()
 }
 
+// Serves gRPC requests (via HTTP/2.x) and REST
+// requests (via HTTP/1.x).
 func serve(conf *Config) error {
 	grpc_server := grpc.NewServer()
 	echo_service.RegisterEchoServer(grpc_server, &EchoServer{})

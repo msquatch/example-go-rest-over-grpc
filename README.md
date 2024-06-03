@@ -1,8 +1,10 @@
 # example-go-rest-over-grpc
 
-Example of providing a REST API on top of gRPC in Go.
+Example of providing a REST API on top of gRPC in Go. The configuration and code provided implement a REST API on top of a simple gRPC service. Both services listen on the same port. Under the hood,when a REST request is received, it is converted to a gRPC request and sent over a socket.
 
-## gRPC
+## Examples
+
+### gRPC
 
 Example calls:
 
@@ -14,7 +16,7 @@ grpcurl -plaintext -import-path . -proto service-echo.proto -proto echo.proto -d
 grpcurl -plaintext -import-path . -proto service-echo.proto -proto echo.proto -d '{"value": 42}' 127.0.0.1:9000 Echo/EchoInt
 ```
 
-## REST
+### REST
 
 Various styles of REST styles are supported by the specification in `echo.yaml`:
 
@@ -43,3 +45,14 @@ curl "http://127.0.0.1:9000/echo/string?value=foo"
 # Extract the `value` field from the URL path.
 curl "http://127.0.0.1:9000/echo/string/foo"
 ```
+
+## Dependencies
+
+In addition to the `make` utility, the following dependencies are required to build a working gRPC service in Go with a REST gateway on top.
+
+* [buf](https://buf.build/docs/installation): protobuf build and management tool.
+* [protoc](https://grpc.io/docs/protoc-installation/): the protobuf compiler.
+* Go protobuf compiler plugins:
+  * [protoc-gen-go](https://grpc.io/docs/languages/go/quickstart/): protobuf compiler/code generator for Go.
+  * [protoc-gen-go-grpc](https://grpc.io/docs/languages/go/quickstart/): protobuf compiler/code generator for gRPC services in Go.
+* [protoc-gen-grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway?tab=readme-ov-file): gRPC Gateway plugin for the protobuf compiler (generates Go code).
