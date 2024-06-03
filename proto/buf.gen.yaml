@@ -1,0 +1,12 @@
+# See https://github.com/grpc-ecosystem/grpc-gateway
+# and https://buf.build/docs/reference/cli/buf/generate#usage
+version: v2
+plugins:
+- local: protoc-gen-go
+  out: ../api/go
+- local: protoc-gen-go-grpc
+  out: ../api/go
+- local: protoc-gen-grpc-gateway
+  out: ../api/go
+  opt:
+  - grpc_api_configuration=echo.yaml

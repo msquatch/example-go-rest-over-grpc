@@ -1,0 +1,53 @@
+# See https://cloud.google.com/endpoints/docs/grpc/grpc-service-config
+type: google.api.Service
+config_version: 3
+name: echo
+title: Echo Service
+http:
+  rules:
+
+  # Extract all fields from the JSON-encoded payload. The URL path is the same
+  # as for gRPC.
+  - selector: Echo.EchoString
+    post: "/Echo/EchoString"
+    body: "*"
+
+  # Extract all fields from the JSON-encoded payload. The URL path is the same
+  # as for gRPC.
+  - selector: Echo.EchoInt
+    post: "/Echo/EchoInt"
+    body: "*"
+
+  # Extract data from the POST body as URL-encoded fields.
+  - selector: Echo.EchoString
+    post: "/echo/stringquery"
+
+  # Extract all fields from the JSON-encoded payload. The path is custom.
+  - selector: Echo.EchoString
+    post: "/echo/string"
+    body: "*"
+
+  # Extract all fields from the query string.
+  - selector: Echo.EchoString
+    get: "/echo/string"
+
+  # Extract the `value` field from the URL path.
+  - selector: Echo.EchoString
+    get: "/echo/string/{value}"
+
+  # Extract data from the POST body as URL-encoded fields.
+  - selector: Echo.EchoInt
+    post: "/echo/intquery"
+
+  # Extract all fields from the JSON-encoded payload.
+  - selector: Echo.EchoInt
+    post: "/echo/int"
+    body: "*"
+
+# Extract all fields from the query string.
+  - selector: Echo.EchoInt
+    get: "/echo/int"
+
+  # Extract the `value` field from the URL path.
+  - selector: Echo.EchoInt
+    get: "/echo/int/{value}"

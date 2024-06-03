@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import "echo.proto";
+
+option go_package = "my/service";
+
+service Echo {
+    // Echo the string provided.
+    rpc EchoString (MyEcho.StringRequest) returns (MyEcho.StringReply);
+
+    // Return the headers sent by the client.
+    rpc EchoInt (MyEcho.IntRequest) returns (MyEcho.IntReply);
+}

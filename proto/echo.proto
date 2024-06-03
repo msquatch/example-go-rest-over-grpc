@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package MyEcho;
+
+option go_package = "my/echo";
+
+// An echo request containing a single string value.
+message StringRequest {
+    // The value to be echoed back.
+    string value = 1;
+}
+
+// An echo reply containing a single string value.
+message StringReply {
+    // The value to be echoed back.
+    string value = 1;
+}
+
+// An echo request containing a single string value.
+message IntRequest {
+    // The value to be echoed back.
+    int64 value = 1;
+}
+
+// An echo reply containing a single string value.
+message IntReply {
+    // The value to be echoed back.
+    int64 value = 1;
+}
